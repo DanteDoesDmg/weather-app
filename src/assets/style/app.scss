@@ -1,0 +1,19 @@
+@import "./imports/reset.scss";
+@import "./imports/variables.scss";
+@import "./imports/mixins";
+html {
+    min-height: 100%;
+    background-image: url("../background.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.card {
+    @include hoverable-semi-transparent();
+    width: 200px;
+    height: 200px;
+}
