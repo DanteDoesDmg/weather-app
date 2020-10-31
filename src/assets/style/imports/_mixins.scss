@@ -1,7 +1,0 @@
-@mixin hoverable-semi-transparent($opacity:0.3, $after-hover:0.4){
-    transition: background 0.2s;
-    background-color: rgba(128,128,128, $opacity);
-    &:hover{
-        background-color: rgba(200,200,200, $after-hover);
-    }
-}

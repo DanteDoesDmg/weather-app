@@ -1,0 +1,37 @@
+@import './variables.scss';
+@mixin hoverable-semi-transparent($opacity:0.3, $after-hover:0.4){
+    transition: background 0.2s;
+    background-color: $unfocused-grey;
+    &:hover{
+        background-color: $focused-white;
+    }
+    &:focus{
+        background-color: $focused-white;
+    }
+}
+
+@mixin main-width($width:$main-max-width, $justify-content:flex-start) {
+    max-width: $width;
+    margin: 0 auto;
+    display:flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: $justify-content;
+    & .main-spacer {
+      flex-basis: 200px;
+    }
+}
+
+@mixin ripple($hover-color) {
+    background-position: center;
+    transition: background 0.8s;
+  &:hover {
+    background: $hover-color radial-gradient(circle, transparent 1%, $hover-color 1%) center/15000%;
+  }
+  &:active {
+    background-color: darken($hover-color, 10%);
+    background-size: 100%;
+    transition: background 0s;
+  }
+  
+}

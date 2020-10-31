@@ -1,6 +1,8 @@
-@import "./imports/reset.scss";
-@import "./imports/variables.scss";
-@import "./imports/mixins";
+@import "./partials/reset.scss";
+@import "./partials/variables.scss";
+@import "./partials/mixins.scss";
+@import "./partials/fonts.scss";
+
 html {
     min-height: 100%;
     background-image: url("../background.jpg");
@@ -11,6 +13,7 @@ html {
     -o-background-size: cover;
     background-size: cover;
     background-attachment: fixed;
+    font-family: 'Roboto', sans-serif;
 }
 .card {
     @include hoverable-semi-transparent();
