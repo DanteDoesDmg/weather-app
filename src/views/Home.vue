@@ -41,7 +41,6 @@ export default class Home extends Vue {
   @include main-width();
   min-height: 100vh;
   text-align: center;
-  padding: 0 20px;
 }
 .header {
   display: flex;
