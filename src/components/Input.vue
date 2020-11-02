@@ -6,7 +6,7 @@
       @keydown.down="down"
       @keydown.up.prevent="up"
       @input="change"
-      @blur="open = false"
+      @blur="blur"
       @click="open = true"
     />
     <ul v-if="openSuggestion" class="autocomplete-results">
@@ -24,6 +24,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import { Debounce } from "vue-debounce-decorator";
 
 @Component
 export default class Input extends Vue {
@@ -86,6 +87,11 @@ export default class Input extends Vue {
         this.current = 0;
       }
     }
+  }
+
+  @Debounce(100)
+  blur(){
+    this.open=false
   }
 }
 </script>
