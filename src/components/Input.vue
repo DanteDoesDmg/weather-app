@@ -27,7 +27,7 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component
 export default class Input extends Vue {
-  @Prop() private items!: Array<Record<string, any>>;
+  @Prop() private items!: Array<Record<string, string>>;
   @Prop() private value!: string;
   @Prop({ default: "text" }) private itemText!: string;
   @Prop({ default: "value" }) private itemValue!: string;
@@ -36,10 +36,12 @@ export default class Input extends Vue {
   text = this.value || "";
   open = false;
 
-  get matches(): Array<Record<string, any>> {
+  get matches(): Array<Record<string, string>> {
     if (this.text !== "") {
       return this.items.filter(el => {
-        return el[this.itemText].indexOf(this.text) >= 0;
+        return (
+          el[this.itemText].toLowerCase().indexOf(this.text.toLowerCase()) >= 0
+        );
       });
     }
     return [];
@@ -61,6 +63,7 @@ export default class Input extends Vue {
     }
   }
   click(value: number) {
+    console.log("here");
     this.current = value;
     this.enter();
   }
