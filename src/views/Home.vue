@@ -18,8 +18,7 @@
         <Button> <strong>Check</strong> </Button>
       </div>
     </div>
-    <div class="cards-container">
-    </div>
+    <div class="cards-container"></div>
   </div>
 </template>
 
@@ -36,7 +35,7 @@ import LogoTitle from "@/components/LogoTitle.vue";
   components: {
     Input,
     Button,
-    LogoTitle,
+    LogoTitle
   }
 })
 export default class Home extends Vue {
@@ -44,9 +43,9 @@ export default class Home extends Vue {
   inputResult = "";
   cities = [];
 
-  @Debounce(500)
+  @Debounce(200)
   fetchItems(val: string) {
-    if (val !== "")
+    if (val.length > 1 && val.length < 101)
       fetch(
         `https://www.mapquestapi.com/search/v3/prediction?limit=5&collection=address%2CadminArea&undefined=undefined&q=${val}&key=${process.env.VUE_APP_MAPQUEST_KEY}`
       )
