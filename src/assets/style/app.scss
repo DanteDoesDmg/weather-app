@@ -15,8 +15,3 @@ html {
     background-attachment: fixed;
     font-family: 'Roboto', sans-serif;
 }
-.card {
-    @include hoverable-semi-transparent();
-    width: 200px;
-    height: 200px;
-}

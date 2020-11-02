@@ -1,12 +1,12 @@
 @import './variables.scss';
-@mixin hoverable-semi-transparent($opacity:0.3, $after-hover:0.4){
+@mixin hoverable-semi-transparent($base: $unfocused-grey, $after-hover:$focused-white){
     transition: background 0.2s;
-    background-color: $unfocused-grey;
+    background-color: $base;
     &:hover{
-        background-color: $focused-white;
+        background-color: $after-hover;
     }
     &:focus{
-        background-color: $focused-white;
+        background-color: $after-hover;
     }
 }
 
