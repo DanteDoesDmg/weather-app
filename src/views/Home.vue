@@ -1,6 +1,6 @@
 <template>
   <div class="home main-width">
-    <div class="main-spacer"/>
+    <div class="main-spacer" />
     <div class="header">
       <LogoTitle :img="logo">Air App</LogoTitle>
       <p class="subtitle">
@@ -8,16 +8,24 @@
         <strong>leave empty for geolocation</strong>
       </p>
       <div class="flex-container">
-        <Input />
+        <Input
+          v-model="inputResult"
+          @change="fetchItems"
+          :items="cities"
+          itemText="displayString"
+          itemValue="name"
+        />
         <Button> <strong>Check</strong> </Button>
       </div>
     </div>
-    <div class="cards-container"/>
+    <div class="cards-container">
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 // @ is an alias to /src
+import { Debounce } from "vue-debounce-decorator";
 import logo from "../assets/logo.png";
 import { Component, Vue } from "vue-property-decorator";
 import Input from "@/components/Input.vue";
@@ -28,11 +36,25 @@ import LogoTitle from "@/components/LogoTitle.vue";
   components: {
     Input,
     Button,
-    LogoTitle
+    LogoTitle,
   }
 })
 export default class Home extends Vue {
   logo = logo;
+  inputResult = "";
+  cities = [];
+
+  @Debounce(500)
+  fetchItems(val: string) {
+    if (val !== "")
+      fetch(
+        `https://www.mapquestapi.com/search/v3/prediction?limit=5&collection=address%2CadminArea&undefined=undefined&q=${val}&key=${process.env.VUE_APP_MAPQUEST_KEY}`
+      )
+        .then(res => res.json())
+        .then(data => {
+          this.cities = data.results;
+        });
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -57,5 +79,8 @@ export default class Home extends Vue {
 }
 .subtitle {
   line-height: 24px;
+}
+.cards-container {
+  width: 100%;
 }
 </style>
