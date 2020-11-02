@@ -63,7 +63,6 @@ export default class Input extends Vue {
     }
   }
   click(value: number) {
-    console.log("here");
     this.current = value;
     this.enter();
   }
