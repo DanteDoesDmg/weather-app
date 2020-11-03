@@ -32,7 +32,7 @@ export default class Input extends Vue {
   @Prop() private value!: string;
   @Prop({ default: "text" }) private itemText!: string;
   @Prop({ default: "value" }) private itemValue!: string;
-  @Prop({ default: false }) private returnObject!: boolean;
+  @Prop({ default: false, type: Boolean }) private returnObject!: boolean;
   current = 0;
   text = this.value || "";
   open = false;
@@ -90,8 +90,8 @@ export default class Input extends Vue {
   }
 
   @Debounce(100)
-  blur(){
-    this.open=false
+  blur() {
+    this.open = false;
   }
 }
 </script>

@@ -13,19 +13,24 @@
           @change="fetchCities"
           :items="cities"
           itemText="displayString"
-          itemValue="name"
+          itemValue="displayString"
+          returnObject
         />
-        <Button @click="fetchWeather(inputResult)">
+        <Button @click.native="fetchWeather(inputResult)">
           <strong>Check</strong>
         </Button>
       </div>
     </div>
     <div class="cards-container">
-      <WeatherCard
-        :key="index"
-        v-for="(result, index) in weatherResults"
-        :forecast="result"
-      />
+      <template v-if="showResults">
+        <WeatherCard
+          :key="index"
+          v-for="(result, index) in weatherResults"
+          :forecast="result"
+          @more-click="goToDetails(result)"
+        />
+      </template>
+      <NoResults v-else-if="weatherFetched" />
     </div>
   </div>
 </template>
@@ -35,32 +40,38 @@
 import { Debounce } from "vue-debounce-decorator";
 import logo from "../assets/logo.png";
 import { Component, Vue } from "vue-property-decorator";
+import { coordsContainer } from "@/store/storeTypes";
 import Input from "@/components/Input.vue";
 import Button from "@/components/Button.vue";
 import LogoTitle from "@/components/LogoTitle.vue";
-import WeatherCard, { WeatherForecast } from "@/components/WeatherCard.vue";
-
-interface WeatherResult {
-  main: Record<string, number>;
-  date: string;
-  location: string;
-  weather: Array<WeatherForecast>;
-  description: string;
-}
+import WeatherCard, { WeatherResult } from "@/components/WeatherCard.vue";
+import NoResults from "@/components/NoResults.vue";
 
 @Component({
   components: {
     Input,
     Button,
     LogoTitle,
-    WeatherCard
+    WeatherCard,
+    NoResults
   }
 })
 export default class Home extends Vue {
   logo = logo;
   inputResult = "";
   cities = [];
-  weatherResults = [];
+
+  toSearch: coordsContainer | string = "";
+  get showResults() {
+    return Object.keys(this.weatherResults).length > 0 && this.weatherFetched;
+  }
+  get weatherResults() {
+    return this.$store.state.weatherData;
+  }
+  get weatherFetched() {
+    return this.$store.state.weatherFetched;
+  }
+
   @Debounce(200)
   fetchCities(val: string) {
     if (val.length > 1 && val.length < 101)
@@ -72,38 +83,15 @@ export default class Home extends Vue {
           this.cities = data.results;
         });
   }
-  fetchWeather(val: string) {
-    fetch(
-      `https://api.openweathermap.org/data/2.5/forecast?q=${val}&units=metric&appid=${process.env.VUE_APP_OPENWEATHER_KEY}`
-    )
-      .then(res => res.json())
-      .then(data => {
-        const orderedWeatherData = data.list.reduce(
-          (
-            ordered: Record<string, WeatherResult>,
-            current: WeatherForecast
-          ) => {
-            const date = (current.dt_txt as string).split(" ")[0];
-            if (!ordered[date])
-              ordered[date] = {
-                main: current.main,
-                location: data.city.name,
-                date: date,
-                description: current.weather[0].description as string,
-                weather: []
-              };
-            ordered[date].weather.push(current);
-            if (ordered[date].main.temp < current.main.temp) {
-              ordered[date].main = current.main;
-              ordered[date].description = current.weather[0]
-                .description as string;
-            }
-            return ordered;
-          },
-          {}
-        );
-        this.weatherResults = orderedWeatherData;
-      });
+  fetchWeather(val: coordsContainer | string) {
+    this.toSearch = val;
+    this.$store.dispatch("getWeatherData", val);
+  }
+  goToDetails(result: WeatherResult) {
+    this.$store.commit("setWeatherResult", result);
+    this.$router.push({
+      path: `Details?&lat=${result.coord.lat}&lon=${result.coord.lon}&dt=${result.date}`
+    });
   }
 }
 </script>
@@ -132,5 +120,6 @@ export default class Home extends Vue {
 }
 .cards-container {
   width: 100%;
+  padding: 0 5px;
 }
 </style>

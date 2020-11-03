@@ -11,13 +11,24 @@
       <p><strong>Description: </strong> {{ forecast.description }}</p>
     </div>
     <div class="more-container">
-      <a class="more-button" href="#">More</a>
+      <a class="more-button" @click="$emit('more-click')">More</a>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+
+export interface WeatherResult {
+  main: Record<string, number>;
+  date: string;
+  location: string;
+  weather: Array<WeatherForecast>;
+  coord: Record<string, number>;
+
+  description: string;
+}
+
 export interface WeatherForecast {
   dt: number;
   main: Record<string, number>;
@@ -44,7 +55,7 @@ export default class WeatherCard extends Vue {
   height: 120px;
   padding: 15px;
   position: relative;
-  margin: 5px;
+  margin: 5px 0;
 }
 .temperature {
   width: 35%;
