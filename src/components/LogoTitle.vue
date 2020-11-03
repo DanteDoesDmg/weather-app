@@ -1,8 +1,10 @@
 <template>
-  <div class="title-container">
-    <h1>
-      <slot> </slot>
-    </h1>
+  <div :class="{ 'title-container': true, small: small, link: link }">
+    <div class="clickable-container">
+      <h1 @click="$emit('click')">
+        <slot> </slot>
+      </h1>
+    </div>
   </div>
 </template>
 
@@ -11,7 +13,13 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component
 export default class LogoTitle extends Vue {
-  @Prop() private img!: string;
+  @Prop({ default: false, type: Boolean }) private small!: boolean;
+  @Prop({ default: false, type: Boolean }) private link!: boolean;
+
+  mounted() {
+    console.log(this.small);
+    console.log(this.link);
+  }
 }
 </script>
 
@@ -22,6 +30,23 @@ export default class LogoTitle extends Vue {
   width: 100%;
   justify-content: center;
   align-items: flex-end;
+  &.small {
+    align-items: flex-start;
+    justify-content: flex-start;
+    h1 {
+      margin-left: 36px;
+      font-size: 28px;
+      &:before {
+        width: 32px;
+        height: 32px;
+        top: 40%;
+        left: -20%;
+      }
+    }
+  }
+  &.link .clickable-container {
+    cursor: pointer;
+  }
 }
 h1 {
   font-size: 40px;
