@@ -1,5 +1,4 @@
-# appchance
-
+# Air app
 ## Project setup
 ```
 yarn install
