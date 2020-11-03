@@ -16,10 +16,6 @@ export default class LogoTitle extends Vue {
   @Prop({ default: false, type: Boolean }) private small!: boolean;
   @Prop({ default: false, type: Boolean }) private link!: boolean;
 
-  mounted() {
-    console.log(this.small);
-    console.log(this.link);
-  }
 }
 </script>
 
