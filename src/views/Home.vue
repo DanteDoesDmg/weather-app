@@ -76,7 +76,7 @@ export default class Home extends Vue {
   fetchCities(val: string) {
     if (val.length > 1 && val.length < 101)
       fetch(
-        `https://www.mapquestapi.com/search/v3/prediction?limit=5&collection=address%2CadminArea&undefined=undefined&q=${val}&key=${process.env.VUE_APP_MAPQUEST_KEY}`
+        `https://www.mapquestapi.com/search/v3/prediction?limit=5&collection=address%2CadminArea&q=${val}&key=${process.env.VUE_APP_MAPQUEST_KEY}`
       )
         .then(res => res.json())
         .then(data => {
